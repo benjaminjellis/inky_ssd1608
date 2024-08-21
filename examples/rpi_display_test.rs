@@ -2,12 +2,12 @@
 // to free up pin 8 for inky's CS pin.
 
 extern crate inky_ssd1608;
-use inky_ssd1608::{Inky1608, Colour};
 use embedded_graphics::{
     image::{Image, ImageRaw},
     pixelcolor::BinaryColor,
     prelude::*,
 };
+use inky_ssd1608::{Colour, Inky1608};
 
 // Graphics
 // #[macro_use]
@@ -17,18 +17,36 @@ use embedded_graphics::text::Text;
 
 // Font
 extern crate profont;
-use profont::{PROFONT_14_POINT, PROFONT_10_POINT};
+use profont::{PROFONT_10_POINT, PROFONT_14_POINT};
 
 fn main() {
     let raw_image = ImageRaw::<BinaryColor>::new(RUSTLOGO, 64);
-    let mut inky = Inky1608::new(Some((250, 122)), None, 0, 22, 27, 17, false, false, None, None).expect("inky");
+    let mut inky = Inky1608::new(
+        Some((250, 122)),
+        None,
+        0,
+        22,
+        27,
+        17,
+        false,
+        false,
+        None,
+        None,
+    )
+    .expect("inky");
     let inky_info = format!("{}", inky);
     inky.set_border(Colour::Black);
     let mut style = MonoTextStyle::new(&PROFONT_10_POINT, BinaryColor::On);
-    Text::new(&inky_info, Point::new(10, 20), style).draw(&mut inky).expect("text");
+    Text::new(&inky_info, Point::new(10, 20), style)
+        .draw(&mut inky)
+        .expect("text");
     style = MonoTextStyle::new(&PROFONT_14_POINT, BinaryColor::On);
-    Text::new("Inky pHat\ndisplay driver", Point::new(10, 100), style).draw(&mut inky).expect("text");
-    Image::new(&raw_image, Point::new(170, 60)).draw(&mut inky).expect("image");
+    Text::new("Inky pHat\ndisplay driver", Point::new(10, 100), style)
+        .draw(&mut inky)
+        .expect("text");
+    Image::new(&raw_image, Point::new(170, 60))
+        .draw(&mut inky)
+        .expect("image");
     inky.flush().unwrap();
 }
 
