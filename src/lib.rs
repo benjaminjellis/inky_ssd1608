@@ -280,6 +280,7 @@ impl Inky1608 {
             destvec.push(dest ^ 0xff);
         }
         self.update(destvec, vec![0x0; (self.cols * self.rows).into()], true)?;
+        self.framebuffer.clear();
         Ok(())
     }
 
