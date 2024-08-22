@@ -181,6 +181,10 @@ impl Inky1608 {
         Ok(inky)
     }
 
+    fn reset_framebuffer(&mut self) {
+        self.framebuffer.iter_mut().for_each(|val| *val = false);
+    }
+
     fn setup(&mut self) -> Result<(), InkyError> {
         self.busy_pin.export()?;
         while !self.busy_pin.is_exported() {}
@@ -280,7 +284,7 @@ impl Inky1608 {
             destvec.push(dest ^ 0xff);
         }
         self.update(destvec, vec![0x0; (self.cols * self.rows).into()], true)?;
-        self.framebuffer.clear();
+        self.reset_framebuffer();
         Ok(())
     }
 
